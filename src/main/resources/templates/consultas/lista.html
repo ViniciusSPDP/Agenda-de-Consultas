@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Consultas</title>
+</head>
+<body>
+    <h1>Agenda de Consultas</h1>
+    <a href="/consultas/novo">Agendar Nova Consulta</a>
+    <hr>
+
+    <table border="1" th:unless="${consultas.isEmpty()}">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Paciente</th>
+                <th>Médico</th>
+                <th>Observações</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="consulta : ${consultas}">
+                <td th:text="${consulta.dataConsulta}">Data</td>
+                <td th:text="${consulta.paciente}">Paciente</td>
+                <td th:text="${consulta.medico.nome}">Médico</td>
+                <td th:text="${consulta.observacoes}">Observações</td>
+                <td>
+                    <a th:href="@{/consultas/{id}/editar(id=${consulta.id})}">Editar</a>
+                    
+                    <form th:action="@{/consultas/{id}(id=${consulta.id})}" th:method="delete" style="display:inline; margin-left: 10px;">
+                        <button type="submit">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div th:if="${consultas.isEmpty()}">
+        <p>Nenhuma consulta agendada.</p>
+    </div>
+</body>
+</html>

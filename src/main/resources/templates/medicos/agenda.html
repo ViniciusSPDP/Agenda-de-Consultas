@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Agenda Completa</title>
+</head>
+<body>
+    <h1>Agenda Completa da Clínica</h1>
+    <a href="/medicos">Voltar para Gestão de Médicos</a>
+    <hr>
+
+    <div th:each="medicoDto : ${agenda}">
+        <h2 th:text="|Dr(a). ${medicoDto.nome} - ${medicoDto.especialidade}|">Nome do Médico</h2>
+
+        <table border="1" th:unless="${medicoDto.consultas.isEmpty()}">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Paciente</th>
+                    <th>Observações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="consulta : ${medicoDto.consultas}">
+                    <td th:text="${consulta.dataConsulta}">Data</td>
+                    <td th:text="${consulta.paciente}">Paciente</td>
+                    <td th:text="${consulta.observacoes}">Observações</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div th:if="${medicoDto.consultas.isEmpty()}">
+            <p>Nenhuma consulta agendada para este médico.</p>
+        </div>
+        <hr>
+    </div>
+
+</body>
+</html>

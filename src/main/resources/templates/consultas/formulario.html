@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Formulário de Consulta</title>
+  </head>
+  <body>
+    <h1>Agendar Nova Consulta</h1>
+
+    <form
+      th:action="${consulta.id == null} ? @{/consultas} : @{/consultas/{id}(id=${consulta.id})}"
+      th:object="${consulta}"
+      th:method="${consulta.id == null} ? 'post' : 'put'"
+    >
+      <input type="hidden" th:if="${consulta.id != null}" th:field="*{id}" />
+
+      <div>
+        <label for="data">Data da Consulta:</label>
+        <input type="date" id="data" th:field="*{dataConsulta}" />
+      </div>
+      <div>
+        <label for="paciente">Nome do Paciente:</label>
+        <input type="text" id="paciente" th:field="*{paciente}" />
+      </div>
+      <div>
+        <label for="medico">Médico:</label>
+        <select id="medico" th:field="*{medico}">
+          <option value="">Selecione um médico</option>
+          <option
+            th:each="medico : ${medicos}"
+            th:value="${medico.id}"
+            th:text="${medico.nome}"
+          ></option>
+        </select>
+      </div>
+      <div>
+        <label for="observacoes">Observações:</label>
+        <textarea id="observacoes" th:field="*{observacoes}"></textarea>
+      </div>
+      <div>
+        <button type="submit">Agendar</button>
+      </div>
+    </form>
+
+    <hr />
+    <a href="/consultas">Voltar para a Lista</a>
+  </body>
+</html>

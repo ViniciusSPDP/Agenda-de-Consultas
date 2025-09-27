@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista de Médicos</title>
+</head>
+
+<body>
+    <h1>Agenda de Médicos</h1>
+    <a href="/medicos/novo">Adicionar Novo Médico</a>
+
+    <hr>
+
+    <table border="1" th:unless="${medicos.isEmpty()}">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Especialidade</th>
+                <th>Ações</th>
+            </tr>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="medico : ${medicos}">
+                <td th:text="${medico.nome}">Nome do Médico</td>
+                <td th:text="${medico.especialidade}">Especialidade</td>
+                <td>
+                    <a th:href="@{/medicos/{id}/editar(id=${medico.id})}">Editar</a>
+
+                    <form th:action="@{/medicos/{id}(id=${medico.id})}" th:method="delete" style="display:inline;">
+                        <button type="submit">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div th:if="${medicos.isEmpty()}">
+        <p>Nenhum médico cadastrado.</p>
+    </div>
+
+</body>
+
+</html>

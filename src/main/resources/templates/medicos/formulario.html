@@ -1,33 +1,47 @@
-<!DOCTYPE html>
-<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Formulário do Médico</title>
-  </head>
-  <body>
-    <h1>Cadastrar Novo Médico</h1>
+<head th:replace="~{fragments/header :: page_header('Formulário de Médico')}"></head>
 
-    <form
-      th:action="${medico.id == null} ? @{/medicos} : @{/medicos/{id}(id=${medico.id})}"
-      th:object="${medico}"
-      th:method="${medico.id == null} ? 'post' : 'put'"
-    >
-      <input type="hidden" th:if="${medico.id != null}" th:field="*{id}" />
+<body class="bg-slate-100 text-slate-800 min-h-screen flex items-center justify-center">
+    <div th:replace="~{fragments/navbar :: page_navbar}"></div>
 
-      <div>
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" th:field="*{nome}" />
-      </div>
-      <div>
-        <label for="especialidade">Especialidade:</label>
-        <input type="text" id="especialidade" th:field="*{especialidade}" />
-      </div>
-      <div>
-        <button type="submit">Salvar</button>
-      </div>
-    </form>
+    <main class="container mx-auto p-4 md:p-8">
+        
+        <div class="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-md">
 
-    <hr />
-    <a href="/medicos">Voltar para a Lista</a>
-  </body>
+            <h1 class="text-2xl font-bold text-slate-900 mb-6" 
+                th:text="${medico.id == null} ? 'Cadastrar Novo Médico' : 'Editar Médico'">
+                Título do Formulário
+            </h1>
+
+            <form th:action="${medico.id == null} ? @{/medicos} : @{/medicos/{id}(id=${medico.id})}" 
+                  th:object="${medico}" 
+                  th:method="${medico.id == null} ? 'post' : 'put'">
+
+                <input type="hidden" th:if="${medico.id != null}" th:field="*{id}" />
+
+                <div class="mb-6">
+                    <label for="nome" class="block text-slate-700 text-sm font-bold mb-2">Nome:</label>
+                    <input type="text" id="nome" th:field="*{nome}"
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline"
+                           placeholder="Ex: Dr. João da Silva" />
+                </div>
+
+                <div class="mb-6">
+                    <label for="especialidade" class="block text-slate-700 text-sm font-bold mb-2">Especialidade:</label>
+                    <input type="text" id="especialidade" th:field="*{especialidade}"
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline"
+                           placeholder="Ex: Cardiologia" />
+                </div>
+                
+                <div class="flex items-center justify-end gap-4">
+                    <a th:href="@{/medicos}" class="text-slate-600 hover:underline">Cancelar</a>
+                    <button type="submit"
+                            class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded-md transition-colors">
+                        Salvar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+</body>
 </html>

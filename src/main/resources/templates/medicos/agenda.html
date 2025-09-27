@@ -1,39 +1,49 @@
-<!DOCTYPE html>
-<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Agenda Completa</title>
-</head>
-<body>
-    <h1>Agenda Completa da Clínica</h1>
-    <a href="/medicos">Voltar para Gestão de Médicos</a>
-    <hr>
+<head th:replace="~{fragments/header :: page_header('Agenda Completa')}"></head>
 
-    <div th:each="medicoDto : ${agenda}">
-        <h2 th:text="|Dr(a). ${medicoDto.nome} - ${medicoDto.especialidade}|">Nome do Médico</h2>
+<body class="bg-slate-100 text-slate-800">
+    <div th:replace="~{fragments/navbar :: page_navbar}"></div>
 
-        <table border="1" th:unless="${medicoDto.consultas.isEmpty()}">
-            <thead>
-                <tr>
-                    <th>Data</th>
-                    <th>Paciente</th>
-                    <th>Observações</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="consulta : ${medicoDto.consultas}">
-                    <td th:text="${consulta.dataConsulta}">Data</td>
-                    <td th:text="${consulta.paciente}">Paciente</td>
-                    <td th:text="${consulta.observacoes}">Observações</td>
-                </tr>
-            </tbody>
-        </table>
+    <main class="container mx-auto p-4 md:p-8">
 
-        <div th:if="${medicoDto.consultas.isEmpty()}">
-            <p>Nenhuma consulta agendada para este médico.</p>
+        <header class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-slate-900">Agenda Completa da Clínica</h1>
+            <a th:href="@{/}" class="text-sky-600 hover:underline">← Voltar ao Painel</a>
+        </header>
+
+        <div class="space-y-8">
+
+            <div th:each="medicoDto : ${agenda}" class="bg-white p-6 rounded-lg shadow-md">
+                
+                <h2 class="text-2xl font-bold text-slate-800 mb-4" 
+                    th:text="|Dr(a). ${medicoDto.nome} - ${medicoDto.especialidade}|">
+                    Nome do Médico
+                </h2>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left" th:unless="${medicoDto.consultas.isEmpty()}">
+                        <thead class="bg-slate-100 text-slate-600 uppercase text-sm">
+                            <tr>
+                                <th class="py-3 px-4">Data</th>
+                                <th class="py-3 px-4">Paciente</th>
+                                <th class="py-3 px-4">Observações</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200">
+                            <tr th:each="consulta : ${medicoDto.consultas}">
+                                <td class="py-3 px-4" th:text="${#temporals.format(consulta.dataConsulta, 'dd/MM/yyyy')}">Data</td>
+                                <td class="py-3 px-4" th:text="${consulta.paciente}">Paciente</td>
+                                <td class="py-3 px-4" th:text="${consulta.observacoes}">Observações</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div th:if="${medicoDto.consultas.isEmpty()}" class="text-center py-6">
+                    <p class="text-slate-500">Nenhuma consulta agendada para este médico.</p>
+                </div>
+            </div>
         </div>
-        <hr>
-    </div>
+    </main>
 
 </body>
 </html>

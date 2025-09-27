@@ -1,0 +1,16 @@
+<nav
+  class="bg-white shadow-md"
+  th:fragment="page_navbar"
+>
+  <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+    <a th:href="@{/}" class="text-xl font-bold text-slate-800 hover:text-sky-600 transition-colors">
+      Clínica Agenda
+    </a>
+
+    <div class="flex space-x-6">
+      <a th:href="@{/medicos}" class="text-slate-600 hover:text-sky-600 transition-colors">Médicos</a>
+      <a th:href="@{/consultas}" class="text-slate-600 hover:text-sky-600 transition-colors">Consultas</a>
+      <a th:href="@{/medicos/agenda}" class="text-slate-600 hover:text-sky-600 transition-colors">Agenda Completa</a>
+    </div>
+  </div>
+</nav>

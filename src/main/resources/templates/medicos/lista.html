@@ -1,46 +1,62 @@
-<!DOCTYPE html>
-<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: page_header('Gestão de Médicos')}"></head>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lista de Médicos</title>
-</head>
+<body class="bg-slate-100 text-slate-800">
+    <div th:replace="~{fragments/navbar :: page_navbar}"></div>
 
-<body>
-    <h1>Agenda de Médicos</h1>
-    <a href="/medicos/novo">Adicionar Novo Médico</a>
+    <main class="container mx-auto p-4 md:p-8">
 
-    <hr>
+        <header class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-slate-900">Gestão de Médicos</h1>
+            <a th:href="@{/medicos/novo}"
+                class="bg-sky-600 text-white font-bold py-2 px-4 rounded-md hover:bg-sky-700 transition-colors">
+                + Adicionar Médico
+            </a>
+        </header>
 
-    <table border="1" th:unless="${medicos.isEmpty()}">
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Especialidade</th>
-                <th>Ações</th>
-            </tr>
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <table class="w-full text-left">
+                <thead class="bg-slate-200 text-slate-600 uppercase text-sm">
+                    <tr>
+                        <th class="py-3 px-6">Nome</th>
+                        <th class="py-3 px-6">Especialidade</th>
+                        <th class="py-3 px-6 text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200">
+                    <tr th:each="medico : ${medicos}" class="hover:bg-slate-50">
+                        <td class="py-4 px-6" th:text="${medico.nome}">Nome do Médico</td>
+                        <td class="py-4 px-6" th:text="${medico.especialidade}">Especialidade</td>
+                        <td class="py-4 px-6">
+                            <div class="flex justify-center items-center gap-4">
 
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="medico : ${medicos}">
-                <td th:text="${medico.nome}">Nome do Médico</td>
-                <td th:text="${medico.especialidade}">Especialidade</td>
-                <td>
-                    <a th:href="@{/medicos/{id}/editar(id=${medico.id})}">Editar</a>
+                                <a th:href="@{/medicos/{id}/editar(id=${medico.id})}"
+                                    class="bg-sky-500 text-white text-xs font-semibold py-1 px-3 rounded-md hover:bg-sky-600 transition-colors">
+                                    Editar
+                                </a>
 
-                    <form th:action="@{/medicos/{id}(id=${medico.id})}" th:method="delete" style="display:inline;">
-                        <button type="submit">Excluir</button>
-                    </form>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                                <a href="#" th:onclick="|confirmDelete(event, 'form-delete-${medico.id}')|"
+                                    class="bg-red-500 text-white text-xs font-semibold py-1 px-3 rounded-md hover:bg-red-600 transition-colors">
+                                    Excluir
+                                </a>
 
-    <div th:if="${medicos.isEmpty()}">
-        <p>Nenhum médico cadastrado.</p>
-    </div>
+                                <form th:id="'form-delete-' + ${medico.id}"
+                                    th:action="@{/medicos/{id}(id=${medico.id})}" th:method="delete" class="hidden">
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div th:if="${medicos.isEmpty()}" class="text-center py-8 px-6">
+                <p class="text-slate-500">Nenhum médico cadastrado.</p>
+            </div>
+        </div>
+
+        <div class="mt-8">
+            <a th:href="@{/}" class="text-sky-600 hover:underline">← Voltar ao Painel</a>
+        </div>
+    </main>
 
 </body>
 

@@ -1,48 +1,66 @@
-<!DOCTYPE html>
-<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Formulário de Consulta</title>
-  </head>
-  <body>
-    <h1>Agendar Nova Consulta</h1>
+<head th:replace="~{fragments/header :: page_header('Formulário de Consulta')}"></head>
 
-    <form
-      th:action="${consulta.id == null} ? @{/consultas} : @{/consultas/{id}(id=${consulta.id})}"
-      th:object="${consulta}"
-      th:method="${consulta.id == null} ? 'post' : 'put'"
-    >
-      <input type="hidden" th:if="${consulta.id != null}" th:field="*{id}" />
+<body class="bg-slate-100 text-slate-800 min-h-screen flex items-center justify-center">
+    <div th:replace="~{fragments/navbar :: page_navbar}"></div>
 
-      <div>
-        <label for="data">Data da Consulta:</label>
-        <input type="date" id="data" th:field="*{dataConsulta}" />
-      </div>
-      <div>
-        <label for="paciente">Nome do Paciente:</label>
-        <input type="text" id="paciente" th:field="*{paciente}" />
-      </div>
-      <div>
-        <label for="medico">Médico:</label>
-        <select id="medico" th:field="*{medico}">
-          <option value="">Selecione um médico</option>
-          <option
-            th:each="medico : ${medicos}"
-            th:value="${medico.id}"
-            th:text="${medico.nome}"
-          ></option>
-        </select>
-      </div>
-      <div>
-        <label for="observacoes">Observações:</label>
-        <textarea id="observacoes" th:field="*{observacoes}"></textarea>
-      </div>
-      <div>
-        <button type="submit">Agendar</button>
-      </div>
-    </form>
+    <main class="container mx-auto p-4 md:p-8">
 
-    <hr />
-    <a href="/consultas">Voltar para a Lista</a>
-  </body>
+        <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
+
+            <h1 class="text-2xl font-bold text-slate-900 mb-6" 
+                th:text="${consulta.id == null} ? 'Agendar Nova Consulta' : 'Editar Consulta'">
+                Título do Formulário
+            </h1>
+
+            <form th:action="${consulta.id == null} ? @{/consultas} : @{/consultas/{id}(id=${consulta.id})}"
+                  th:object="${consulta}" 
+                  th:method="${consulta.id == null} ? 'post' : 'put'">
+
+                <input type="hidden" th:if="${consulta.id != null}" th:field="*{id}" />
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="mb-6">
+                        <label for="data" class="block text-slate-700 text-sm font-bold mb-2">Data da Consulta:</label>
+                        <input type="date" id="data" th:field="*{dataConsulta}" 
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline" />
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="paciente" class="block text-slate-700 text-sm font-bold mb-2">Nome do Paciente:</label>
+                        <input type="text" id="paciente" th:field="*{paciente}"
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline"
+                               placeholder="Nome completo do paciente" />
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <label for="medico" class="block text-slate-700 text-sm font-bold mb-2">Médico:</label>
+                    <select id="medico" th:field="*{medico}"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <option value="">Selecione um médico</option>
+                        <option th:each="medico : ${medicos}" 
+                                th:value="${medico.id}"
+                                th:text="${medico.nome} + ' (' + ${medico.especialidade} + ')'">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="mb-6">
+                    <label for="observacoes" class="block text-slate-700 text-sm font-bold mb-2">Observações:</label>
+                    <textarea id="observacoes" th:field="*{observacoes}" rows="4"
+                              class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline"
+                              placeholder="Detalhes adicionais (opcional)"></textarea>
+                </div>
+
+                <div class="flex items-center justify-end gap-4 mt-8">
+                    <a th:href="@{/consultas}" class="text-slate-600 hover:underline">Cancelar</a>
+                    <button type="submit"
+                            class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded-md transition-colors">
+                        Salvar Agendamento
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
 </html>

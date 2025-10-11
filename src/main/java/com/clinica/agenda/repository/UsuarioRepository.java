@@ -9,4 +9,6 @@ import com.clinica.agenda.model.Usuario;
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     Optional<Usuario> findByLoginUsuario(String loginUsuario);
+
+    Optional<Usuario> findByCpfUsuario(String cpfUsuario);
 }

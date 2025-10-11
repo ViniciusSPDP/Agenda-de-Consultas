@@ -2,6 +2,8 @@ package com.clinica.agenda.model;
 
 import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,6 +22,7 @@ public class Consulta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataConsulta;
 
     private String paciente;

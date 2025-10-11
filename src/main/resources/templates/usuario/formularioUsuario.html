@@ -1,36 +1,128 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Cadastro de Usuario</h1>
-    <form th:action="@{/usuarios/salvar}" method="post" th:object="${usuario}">
-        <input type="hidden" th:field="*{idUsuario}">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+  <head
+    th:replace="~{fragments/header :: page_header('Cadastro de Usuário')}"
+  ></head>
 
-        <label for="nomeUsuario">Nome:</label>
-        <input type="text" id="nomeUsuario" th:field="*{nomeUsuario}" required>
-        <br/>
+  <body
+    class="bg-slate-100 text-slate-800 min-h-screen flex items-center justify-center"
+  >
+    <main class="container mx-auto p-4 md:p-8">
+      <div class="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold text-slate-900 mb-6 text-center">
+          Crie sua Conta
+        </h1>
 
-        <label for="cpfUsuario">CPF:</label>
-        <input type="text" id="cpfUsuario" th:field="*{cpfUsuario}" required>
-        <br/>
+        <div
+          th:if="${error}"
+          class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+          role="alert"
+        >
+          <span class="block sm:inline" th:text="${error}"></span>
+        </div>
 
-        <label for="loginUsuario">Login:</label>
-        <input type="text" id="loginUsuario" th:field="*{loginUsuario}" required>
-        <br/>
+        <form
+          th:action="@{/usuarios/salvar}"
+          method="post"
+          th:object="${usuario}"
+        >
+          <input type="hidden" th:field="*{idUsuario}" />
 
-        <label for="senhaUsuario">Senha:</label>
-        <input type="password" id="senhaUsuario" th:field="*{senhaUsuario}" required>
-        <br/>
+          <div class="mb-4">
+            <label
+              for="nomeUsuario"
+              class="block text-slate-700 text-sm font-bold mb-2"
+              >Nome Completo:</label
+            >
+            <input
+              type="text"
+              id="nomeUsuario"
+              th:field="*{nomeUsuario}"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline"
+              placeholder="Seu nome completo"
+              required
+            />
+          </div>
 
-        <input type="hidden" th:field="*{role}" value="ROLE_USER">
-        <br/>
+          <div class="mb-4">
+            <label
+              for="cpfUsuario"
+              class="block text-slate-700 text-sm font-bold mb-2"
+              >CPF:</label
+            >
+            <input
+              type="text"
+              id="cpfUsuario"
+              th:field="*{cpfUsuario}"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline"
+              placeholder="Apenas números"
+              required
+            />
+          </div>
 
-        <input type="submit" value="Salvar">
-    </form>
-    
-</body>
+          <div class="mb-4">
+            <label
+              for="whatsappUsuario"
+              class="block text-slate-700 text-sm font-bold mb-2"
+              >WhatsApp:</label
+            >
+            <input
+              type="text"
+              id="whatsappUsuario"
+              th:field="*{whatsappUsuario}"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700"
+              placeholder="Seu número com DDD (Ex: 11999998888)"
+              required
+            />
+          </div>
+
+          <div class="mb-4">
+            <label
+              for="loginUsuario"
+              class="block text-slate-700 text-sm font-bold mb-2"
+              >Login (Usuário):</label
+            >
+            <input
+              type="text"
+              id="loginUsuario"
+              th:field="*{loginUsuario}"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline"
+              placeholder="Escolha um nome de usuário"
+              required
+            />
+          </div>
+
+          <div class="mb-6">
+            <label
+              for="senhaUsuario"
+              class="block text-slate-700 text-sm font-bold mb-2"
+              >Senha:</label
+            >
+            <input
+              type="password"
+              id="senhaUsuario"
+              th:field="*{senhaUsuario}"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline"
+              placeholder="Crie uma senha segura"
+              required
+            />
+          </div>
+
+          <input type="hidden" th:field="*{role}" value="ROLE_USER" />
+
+          <div class="flex items-center justify-between mt-8">
+            <a th:href="@{/login}" class="text-slate-600 hover:underline"
+              >Já tenho uma conta</a
+            >
+            <button
+              type="submit"
+              class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded-md transition-colors"
+            >
+              Cadastrar
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </body>
 </html>

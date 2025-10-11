@@ -2,15 +2,47 @@
   class="bg-white shadow-md"
   th:fragment="page_navbar"
 >
-  <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-    <a th:href="@{/}" class="text-xl font-bold text-slate-800 hover:text-sky-600 transition-colors">
-      Clínica Agenda
-    </a>
+  <div class="container mx-auto px-6 py-4">
+    <div class="flex justify-between items-center">
+      <!-- Logo/Brand -->
+      <a 
+        th:href="@{/home}" 
+        class="text-xl font-bold text-slate-800 hover:text-sky-600 transition-colors"
+      >
+        Clínica Agenda
+      </a>
 
-    <div class="flex space-x-6">
-      <a th:href="@{/medicos}" class="text-slate-600 hover:text-sky-600 transition-colors">Médicos</a>
-      <a th:href="@{/consultas}" class="text-slate-600 hover:text-sky-600 transition-colors">Consultas</a>
-      <a th:href="@{/medicos/agenda}" class="text-slate-600 hover:text-sky-600 transition-colors">Agenda Completa</a>
+      <!-- Menu Items -->
+      <div class="flex items-center gap-6">
+        <a 
+          th:href="@{/medicos}" 
+          class="text-slate-600 hover:text-sky-600 transition-colors font-medium"
+        >
+          Médicos
+        </a>
+        <a 
+          th:href="@{/consultas}" 
+          class="text-slate-600 hover:text-sky-600 transition-colors font-medium"
+        >
+          Consultas
+        </a>
+        <a 
+          th:href="@{/medicos/agenda}" 
+          class="text-slate-600 hover:text-sky-600 transition-colors font-medium"
+        >
+          Agenda Completa
+        </a>
+        
+        <!-- Logout Button -->
+        <form th:action="@{/logout}" method="post" class="m-0">
+          <button 
+            type="submit" 
+            class="text-slate-600 hover:text-red-600 transition-colors font-medium cursor-pointer bg-transparent border-0 p-0"
+          >
+            Sair
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 </nav>

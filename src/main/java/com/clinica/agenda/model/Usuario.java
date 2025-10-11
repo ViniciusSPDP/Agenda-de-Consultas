@@ -33,6 +33,9 @@ public class Usuario {
     @Column(nullable = false, length = 200)
     private String senhaUsuario;
 
+    @Column(nullable = false, length = 30)
+    private String whatsappUsuario;
+
     private String role = "ROLE_USER";
     
 }

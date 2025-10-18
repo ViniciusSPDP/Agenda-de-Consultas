@@ -1,6 +1,5 @@
 package com.clinica.agenda.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,41 +15,38 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.clinica.agenda.dto.AgendaMedicoDTO;
 import com.clinica.agenda.model.Medico;
-import com.clinica.agenda.repository.MedicoRepository;
-
-
+import com.clinica.agenda.service.MedicoService;
 
 @Controller
 @RequestMapping("/medicos")
 public class MedicoController {
 
     @Autowired
-    private MedicoRepository medicoRepository;
+    private MedicoService medicoService;
 
     @GetMapping
-    public String listarMedicos(Model model){
-        model.addAttribute("medicos", medicoRepository.findAll());
+    public String listarMedicos(Model model) {
+        model.addAttribute("medicos", medicoService.listarTodos());
         return "medicos/lista";
     }
 
     @GetMapping("/novo")
-    public String exibirFormulario(Model model){
+    public String exibirFormulario(Model model) {
         model.addAttribute("medico", new Medico());
         return "medicos/formulario";
     }
 
     @PostMapping
-    public String salvarMedico(@ModelAttribute("medico") Medico medico){
-        medicoRepository.save(medico);
+    public String salvarMedico(@ModelAttribute("medico") Medico medico) {
+        medicoService.salvar(medico);
         return "redirect:/medicos";
     }
 
     @DeleteMapping("/{id}")
     public String excluirMedico(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         try {
-            medicoRepository.deleteById(id);
+            medicoService.excluir(id);
             redirectAttributes.addFlashAttribute("success", "Médico excluído com sucesso!");
         } catch (DataIntegrityViolationException e) {
             redirectAttributes.addFlashAttribute("error", "Não é possível excluir o médico, pois ele está associado a uma ou mais consultas.");
@@ -60,7 +56,7 @@ public class MedicoController {
 
     @GetMapping("/{id}/editar")
     public String exibirFormularioEdicao(@PathVariable Integer id, Model model) {
-        Optional<Medico> medico = medicoRepository.findById(id);
+        Optional<Medico> medico = medicoService.buscarPorId(id);
         if (medico.isPresent()) {
             model.addAttribute("medico", medico.get());
             return "medicos/formulario";
@@ -71,19 +67,13 @@ public class MedicoController {
 
     @PutMapping("/{id}")
     public String atualizarMedico(@PathVariable Integer id, @ModelAttribute("medico") Medico medico) {
-        medico.setId(id);
-        medicoRepository.save(medico);
+        medicoService.atualizar(id, medico);
         return "redirect:/medicos";
     }
 
     @GetMapping("/agenda")
     public String exibirAgendaCompleta(Model model) {
-        List<Medico> medicos = medicoRepository.findAllWithConsultas();
-        List<AgendaMedicoDTO> agendas = medicos.stream()
-                .map(AgendaMedicoDTO::new)
-                .toList();
-        model.addAttribute("agenda", agendas);
+        model.addAttribute("agenda", medicoService.buscarAgendaCompleta());
         return "medicos/agenda";
     }
-    
 }
